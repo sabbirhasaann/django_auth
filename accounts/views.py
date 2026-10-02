@@ -13,11 +13,9 @@ class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({
-            "id": request.user.id,
-            "username": request.user.username,
-            "email": request.user.email,
-        })
+        return Response(
+            UserSerializer(request.user).data,
+        )
 
 
 class StatusView(APIView):
