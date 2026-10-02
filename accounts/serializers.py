@@ -77,3 +77,23 @@ class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(read_only=True)
     email = serializers.EmailField(read_only=True)
+
+
+class LogoutSerializer(serializers.Serializer):
+
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+
+        try:
+            refresh = attrs["refresh"]
+            refresh_token = RefreshToken(
+                refresh
+            )
+            refresh_token.blacklist()
+        except Exception:
+            raise serializers.ValidationError(
+                "Invalid or expired refresh token"
+            )
+
+        return attrs
