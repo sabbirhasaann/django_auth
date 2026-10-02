@@ -37,3 +37,37 @@ class RefreshTokenSerializer(serializers.Serializer):
         refresh_token = RefreshToken(attrs["refresh"])
         attrs["access"] = str(refresh_token.access_token)
         return attrs
+
+
+class LoginSerializer(serializers.Serializer):
+
+    username = serializers.CharField()
+    password = serializers.CharField(
+        write_only=True,
+        style={"input_type":"password"}
+    )
+
+    def validate(self, attrs):
+
+        username = attrs["username"]
+        password = attrs["password"]
+
+        request = self.context.get("request")
+
+        user = authenticate(
+            request=request,
+            username=username,
+            password=password
+        )
+
+        if user is None:
+            raise serializers.ValidationError(
+                "Invalid username and password!"
+            )
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "The account is inactive"
+            )
+
+        attrs["user"] = user
+        return attrs

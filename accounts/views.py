@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import AccessTokenLoginSerializer, RefreshTokenSerializer
+from .serializers import AccessTokenLoginSerializer, RefreshTokenSerializer, LoginSerializer
 
 
 class MeView(APIView):
@@ -64,6 +64,37 @@ class RefreshTokenView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response({
             'access': serializer.validated_data['access'],
+        },
+            status=status.HTTP_200_OK,
+        )
+
+
+class LoginView(APIView):
+
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+
+        serializer = LoginSerializer(
+            data=request.data,
+            context={"request": request}
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        user = serializer.validated_data["user"]
+
+        refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
+
+        return Response({
+            "refresh": str(refresh),
+            "access": str(access),
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+            }
         },
             status=status.HTTP_200_OK,
         )
