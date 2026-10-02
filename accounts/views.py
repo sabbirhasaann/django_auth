@@ -14,6 +14,8 @@ from .serializers import (
     LogoutSerializer,
 )
 
+from .services import TokenRevocationService
+
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
@@ -112,6 +114,10 @@ class LogoutView(APIView):
         )
 
         serializer.is_valid(raise_exception=True)
+
+        refresh_token = serializer.validated_data["refresh"]
+
+        TokenRevocationService.revoke(refresh_token)
 
         return Response({
             'details': 'Successfully logged out.'
