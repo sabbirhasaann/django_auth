@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import AccessTokenLoginSerializer
+from .serializers import AccessTokenLoginSerializer, RefreshTokenSerializer
 
 
 class MeView(APIView):
@@ -48,6 +48,22 @@ class AccessTokenLoginView(APIView):
         access_token = AccessToken.for_user(user)
         return Response({
             "access": str(access_token),
+        },
+            status=status.HTTP_200_OK,
+        )
+
+
+class RefreshTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = RefreshTokenSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(raise_exception=True)
+        return Response({
+            'access': serializer.validated_data['access'],
         },
             status=status.HTTP_200_OK,
         )
