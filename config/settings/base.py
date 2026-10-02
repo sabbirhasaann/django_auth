@@ -18,7 +18,8 @@ INSTALLED_APPS = [
 NEW_APPS = [
     "rest_framework",
     "accounts",
-    "public"
+    "public",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 INSTALLED_APPS += NEW_APPS
