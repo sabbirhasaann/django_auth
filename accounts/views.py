@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import AccessTokenLoginSerializer, RefreshTokenSerializer, LoginSerializer
+from .serializers import AccessTokenLoginSerializer, RefreshTokenSerializer, LoginSerializer, UserSerializer
 
 
 class MeView(APIView):
@@ -90,11 +90,7 @@ class LoginView(APIView):
         return Response({
             "refresh": str(refresh),
             "access": str(access),
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-            }
+            "user": UserSerializer(user).data,
         },
             status=status.HTTP_200_OK,
         )
