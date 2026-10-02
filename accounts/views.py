@@ -68,6 +68,7 @@ class RefreshTokenView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response({
             'access': serializer.validated_data['access'],
+            'refresh': serializer.validated_data['refresh'],
         },
             status=status.HTTP_200_OK,
         )
