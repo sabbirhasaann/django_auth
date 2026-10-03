@@ -104,8 +104,49 @@ class LogoutSerializer(serializers.Serializer):
 
     refresh = serializers.CharField()
 
+
 class LoginResponseSerializer(serializers.Serializer):
 
     access = serializers.CharField()
     refresh = serializers.CharField()
     user = UserSerializer()
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(write_only=True, min_length=6)
+    confirm_password = serializers.CharField(write_only=True,)
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "password",
+            "confirm_password",
+            "first_name",
+            "last_name",
+        ]
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["confirm_password"]:
+            raise serializers.ValidationError({
+                "confirm_password":
+                "Passwords do not match."
+            })
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop(
+            "confirm_password"
+        )
+
+        password = validated_data.pop("password")
+
+        user = User(**validated_data)
+
+        user.set_password(password)
+        user.save()
+
+        return user
+
+

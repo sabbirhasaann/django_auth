@@ -6,6 +6,7 @@ from .views import (
     RefreshTokenView,
     LoginView,
     LogoutView,
+    RegisterView,
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('refresh/', RefreshTokenView.as_view(), name='refresh-token'),
     path('v2/login/', LoginView.as_view(), name='v2-login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
 ]
