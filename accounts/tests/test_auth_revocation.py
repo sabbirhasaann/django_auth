@@ -28,3 +28,39 @@ class TokenRevocationTests(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+    def test_revoked_refresh_token_cannot_be_used(self):
+        refresh = RefreshToken.for_user(self.user)
+
+        refresh_string = str(refresh)
+
+        logout_response = self.client.post(
+            "/api/auth/logout/",
+            {
+                "refresh": refresh_string,
+            },
+            format="json",
+        )
+
+        print("Logout Response...", logout_response)
+
+        self.assertEqual(
+            logout_response.status_code,
+            status.HTTP_200_OK,
+        )
+
+        refresh_response = self.client.post(
+            "/api/auth/refresh/",
+            {
+                "refresh": refresh_string,
+            },
+            format="json",
+        )
+
+        print("Refresh Response...", refresh_response)
+
+        self.assertEqual(
+            refresh_response.status_code,
+            status.HTTP_401_UNAUTHORIZED,
+        )
