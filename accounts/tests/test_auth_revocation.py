@@ -83,7 +83,7 @@ class TokenRevocationTests(APITestCase):
         )
 
         new_refresh = response.data.get("refresh")
-        
+
         self.assertIsNotNone(new_refresh)
 
         # self.assertNotEqual(
@@ -103,3 +103,15 @@ class TokenRevocationTests(APITestCase):
         #     old_token_response.status_code,
         #     status.HTTP_401_UNAUTHORIZED,
         # )
+
+    def test_invalid_refresh_token_is_rejected(self):
+
+        response = self.client.post(
+            "/api/auth/refresh/",
+            {
+                "refresh": 'not-a-real-token',
+            },
+            format='json',
+        )
+        print("Response status_code...", response.status_code)
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
