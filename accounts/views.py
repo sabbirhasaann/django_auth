@@ -12,9 +12,14 @@ from .serializers import (
     LoginSerializer,
     UserSerializer,
     LogoutSerializer,
+    LoginResponseSerializer
 )
 
-from .services import TokenRevocationService
+
+from .services import (
+    TokenRevocationService,
+    TokenService,
+)
 
 
 class MeView(APIView):
@@ -91,14 +96,15 @@ class LoginView(APIView):
 
         user = serializer.validated_data["user"]
 
-        refresh = RefreshToken.for_user(user)
-        access = refresh.access_token
+        # refresh = RefreshToken.for_user(user)
+        # access = refresh.access_token
+        tokens = TokenService.create_token_pair(user)
 
         return Response({
-            "refresh": str(refresh),
-            "access": str(access),
-            "user": UserSerializer(user).data,
+            **tokens,
+            "user": UserSerializer(user).data
         },
+
             status=status.HTTP_200_OK,
         )
 

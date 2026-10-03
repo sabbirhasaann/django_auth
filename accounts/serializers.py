@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .models import User
+
 
 class AccessTokenLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -41,7 +43,7 @@ class RefreshTokenSerializer(serializers.Serializer):
 
 class LoginSerializer(serializers.Serializer):
 
-    username = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField(
         write_only=True,
         style={"input_type": "password"}
@@ -49,14 +51,14 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
 
-        username = attrs["username"]
+        email = attrs["email"]
         password = attrs["password"]
 
         request = self.context.get("request")
 
         user = authenticate(
             request=request,
-            username=username,
+            email=email,
             password=password
         )
 
@@ -73,13 +75,37 @@ class LoginSerializer(serializers.Serializer):
         return attrs
 
 
-class UserSerializer(serializers.Serializer):
+# class UserSerializer(serializers.Serializer):
 
-    id = serializers.IntegerField(read_only=True)
-    username = serializers.CharField(read_only=True)
-    email = serializers.EmailField(read_only=True)
+#     id = serializers.IntegerField(read_only=True)
+#     username = serializers.CharField(read_only=True)
+#     email = serializers.EmailField(read_only=True)
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "is_email_verified",
+        ]
+
+        read_only_fields = [
+            "id",
+            "is_email_verified",
+        ]
 
 
 class LogoutSerializer(serializers.Serializer):
 
     refresh = serializers.CharField()
+
+class LoginResponseSerializer(serializers.Serializer):
+
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+    user = UserSerializer()

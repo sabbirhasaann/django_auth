@@ -13,3 +13,14 @@ class TokenRevocationService:
 
         except TokenError:
             raise
+
+class TokenService:
+
+    @staticmethod
+    def create_token_pair(user):
+        refresh = RefreshToken.for_user(user)
+
+        return {
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        }
