@@ -4,24 +4,24 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class AccessTokenLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=10)
+    email = serializers.EmailField()
     password = serializers.CharField(
         write_only=True, style={'input_type': 'password'})
 
     def validate(self, attrs):
         print(attrs)
         print(self)
-        username = attrs['username']
+        email = attrs['email']
         password = attrs['password']
 
         user = authenticate(
             request=self.context.get('request'),
-            username=username,
+            email=email,
             password=password,
         )
 
         if user is None:
-            raise serializers.ValidationError("Invalid username and password")
+            raise serializers.ValidationError("Invalid email or password")
         if not user.is_active:
             raise serializers.ValidationError("The account is inactive")
 
@@ -44,7 +44,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(
         write_only=True,
-        style={"input_type":"password"}
+        style={"input_type": "password"}
     )
 
     def validate(self, attrs):
@@ -71,6 +71,7 @@ class LoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
+
 
 class UserSerializer(serializers.Serializer):
 
