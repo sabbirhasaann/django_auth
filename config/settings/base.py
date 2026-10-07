@@ -20,6 +20,7 @@ NEW_APPS = [
     "accounts",
     "public",
     "rest_framework_simplejwt.token_blacklist",
+    'drf_spectacular',
 ]
 
 INSTALLED_APPS += NEW_APPS
@@ -81,4 +82,4 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-AUTH_USER_MODEL='accounts.User'
+AUTH_USER_MODEL = 'accounts.User'

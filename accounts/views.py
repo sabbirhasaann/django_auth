@@ -6,6 +6,9 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
+
 from .serializers import (
     AccessTokenLoginSerializer,
     RefreshTokenSerializer,
@@ -47,6 +50,22 @@ class StatusView(APIView):
 class AccessTokenLoginView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Get an access token by email and passowrd",
+        description="Fetches access token",
+        request=AccessTokenLoginSerializer,
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1Ni...",
+                    }
+                },
+            }
+        },
+    )
     def post(self, request):
 
         serializer = AccessTokenLoginSerializer(
