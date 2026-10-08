@@ -48,6 +48,10 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "TaskFlow API",
     "DESCRIPTION": "API for managing projects, tasks, comments, and attachments.",
     "VERSION": "1.0.0",
+
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
 }
 
 SIMPLE_JWT = {
