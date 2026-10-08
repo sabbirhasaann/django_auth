@@ -22,6 +22,7 @@ NEW_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'products',
 ]
 
 INSTALLED_APPS += NEW_APPS
