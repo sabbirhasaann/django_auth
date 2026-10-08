@@ -9,6 +9,10 @@ from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework import serializers
 
+from .models import User
+
+from rest_framework import generics
+
 from .serializers import (
     AccessTokenLoginSerializer,
     RefreshTokenSerializer,
@@ -170,3 +174,9 @@ class RegisterView(APIView):
         },
             status=status.HTTP_201_CREATED,
         )
+
+
+class UsersListView(generics.ListAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
