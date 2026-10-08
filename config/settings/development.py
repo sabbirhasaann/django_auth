@@ -44,6 +44,11 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "TaskFlow API",
+    "DESCRIPTION": "API for managing projects, tasks, comments, and attachments.",
+    "VERSION": "1.0.0",
+}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
