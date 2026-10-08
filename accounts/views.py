@@ -11,7 +11,7 @@ from rest_framework import serializers
 
 from .models import User
 
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 from .serializers import (
     AccessTokenLoginSerializer,
@@ -177,6 +177,11 @@ class RegisterView(APIView):
 
 
 class UsersListView(generics.ListAPIView):
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
