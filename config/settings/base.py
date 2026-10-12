@@ -23,6 +23,7 @@ NEW_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'products',
+    'projects',
 ]
 
 INSTALLED_APPS += NEW_APPS
