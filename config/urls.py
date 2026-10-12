@@ -37,5 +37,6 @@ urlpatterns = [
          TokenRefreshView.as_view(), name="token-refresh"),
     path('api/auth/', include('accounts.urls')),
     path('api/public/', include('public.urls')),
-    path('api/', include('products.urls'))
+    path('api/', include('products.urls')),
+    path('api/projects/', include('projects.urls')),
 ]
