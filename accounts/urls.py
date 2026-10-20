@@ -20,7 +20,11 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
     path('users/', UsersListView.as_view(), name='users-list'),
-    path('viewset/users/<int:pk>', UserViewSet.as_view({
+    path('viewset/users/', UserViewSet.as_view({
+        'get': 'list',
+        'post': 'create'
+    })),
+    path('viewset/users/<int:pk>/', UserViewSet.as_view({
         'get': 'retrieve',
         'put': 'update',
         'patch': 'partial_update',
