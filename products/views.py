@@ -5,6 +5,8 @@ from .models import Product
 from .serializers import ProductSerializer, ProductCreateSerializer
 from drf_spectacular.utils import extend_schema
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+
 
 class ProductListCreateView(generics.ListCreateAPIView):
 
@@ -26,6 +28,7 @@ class ProductView(APIView):
     def post(self, request):
         pass
 
+
 class ProductViewSet(ModelViewSet):
 
     @extend_schema(
@@ -38,3 +41,16 @@ class ProductViewSet(ModelViewSet):
             *args,
             **kwargs,
         )
+
+    @extend_schema(
+        summary="Publish a product",
+        responses={
+            200: ProductSerializer
+        }
+    )
+    @action(
+        detail=True,
+        methods=["post"],
+    )
+    def publish(self, request, pk=None):
+        pass
