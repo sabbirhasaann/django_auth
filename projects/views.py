@@ -31,7 +31,6 @@ class CreateProjectAPIView(APIView):
         request=ProjectCreateSerializer,
         responses=ProjectSerializer,
     )
-    
     def post(self, request):
 
         serializer = ProjectCreateSerializer(
@@ -40,7 +39,9 @@ class CreateProjectAPIView(APIView):
 
         serializer.is_valid(raise_exception=True)
 
-        project = serializer.save()
+        project = serializer.save(
+            owner=self.request.user
+        )
 
         response_project = ProjectSerializer(project)
 
