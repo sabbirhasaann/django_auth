@@ -12,5 +12,8 @@ urlpatterns = [
     path('project/create/', CreateProjectAPIView.as_view(), name='create-project'),
     path('tasks/<int:pk>/retrieve/', TaskViewSet.as_view({
         'get': 'retrieve'
-    }), name="task-retrieve")
+    }), name="task-retrieve"),
+    path('tasks/', TaskViewSet.as_view({
+        'get': 'list'
+    })),
 ]
