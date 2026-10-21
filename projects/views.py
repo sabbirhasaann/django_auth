@@ -69,8 +69,24 @@ class TaskViewSet(ModelViewSet):
                 type=int,
                 location=OpenApiParameter.PATH,
                 description="The uniqe Id of the task."
-            )
+            ),
         ]
     )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, args, kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="search",
+                type=str,
+                location=OpenApiParameter.QUERY,
+                description=(
+                    "Search task titles using a "
+                    "case-insensitive partial match."
+                )
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)

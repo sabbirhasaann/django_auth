@@ -8,8 +8,14 @@ class TaskFilter(django_filters.FilterSet):
         choices=Task.Status.choices,
     )
 
+    search = django_filters.CharFilter(
+        field_name='title',
+        lookup_expr='icontains'
+    )
+
     class Meta:
         model = Task
         fields = [
             "status",
+            "search",
         ]
