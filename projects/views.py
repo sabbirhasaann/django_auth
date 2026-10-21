@@ -3,7 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from rest_framework.viewsets import ModelViewSet
+from .models import Task
+from .serializers import TaskSerializer
+
 
 from .serializers import (
     ProjectSerializer,
@@ -49,3 +53,22 @@ class CreateProjectAPIView(APIView):
             response_project.data,
             status=status.HTTP_201_CREATED,
         )
+
+
+class TaskViewSet(ModelViewSet):
+
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="id",
+                type=int,
+                location=OpenApiParameter.PATH,
+                description="The uniqe Id of the task."
+            )
+        ]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, args, kwargs)
