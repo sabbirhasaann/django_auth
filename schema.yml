@@ -15,13 +15,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AccessTokenLogin'
+              $ref: '#/components/schemas/AccessTokenLoginRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AccessTokenLogin'
+              $ref: '#/components/schemas/AccessTokenLoginRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AccessTokenLogin'
+              $ref: '#/components/schemas/AccessTokenLoginRequest'
         required: true
       security:
       - jwtAuth: []
@@ -102,13 +102,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
         required: true
       responses:
         '200':
@@ -129,13 +129,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
         required: true
       responses:
         '200':
@@ -197,13 +197,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
         required: true
       security:
       - jwtAuth: []
@@ -250,13 +250,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserRequest'
         required: true
       security:
       - jwtAuth: []
@@ -282,13 +282,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
       security:
       - jwtAuth: []
       - {}
@@ -340,13 +340,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/ProductRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/ProductRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/ProductRequest'
         required: true
       security:
       - jwtAuth: []
@@ -413,13 +413,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductCreate'
+              $ref: '#/components/schemas/ProductCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ProductCreate'
+              $ref: '#/components/schemas/ProductCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ProductCreate'
+              $ref: '#/components/schemas/ProductCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -442,13 +442,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProjectCreate'
+              $ref: '#/components/schemas/ProjectCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ProjectCreate'
+              $ref: '#/components/schemas/ProjectCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ProjectCreate'
+              $ref: '#/components/schemas/ProjectCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -636,27 +636,27 @@ paths:
           description: ''
 components:
   schemas:
-    AccessTokenLogin:
+    AccessTokenLoginRequest:
       type: object
       properties:
         email:
           type: string
           format: email
+          minLength: 1
         password:
           type: string
           writeOnly: true
+          minLength: 1
       required:
       - email
       - password
-    PatchedUser:
+    PatchedUserRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         email:
           type: string
           format: email
+          minLength: 1
           maxLength: 254
         first_name:
           type: string
@@ -667,9 +667,6 @@ components:
         phone_number:
           type: string
           maxLength: 20
-        is_email_verified:
-          type: boolean
-          readOnly: true
     Product:
       type: object
       properties:
@@ -704,11 +701,33 @@ components:
       - name
       - price
       - updated_at
-    ProductCreate:
+    ProductCreateRequest:
       type: object
       properties:
         name:
           type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        stock_quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - name
+      - price
+    ProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
           maxLength: 200
         description:
           type: string
@@ -752,11 +771,12 @@ components:
       - name
       - owner
       - updated_at
-    ProjectCreate:
+    ProjectCreateRequest:
       type: object
       properties:
         name:
           type: string
+          minLength: 1
           maxLength: 200
         description:
           type: string
@@ -766,12 +786,6 @@ components:
     TokenObtainPair:
       type: object
       properties:
-        email:
-          type: string
-          writeOnly: true
-        password:
-          type: string
-          writeOnly: true
         access:
           type: string
           readOnly: true
@@ -780,9 +794,21 @@ components:
           readOnly: true
       required:
       - access
+      - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
       - email
       - password
-      - refresh
     TokenRefresh:
       type: object
       properties:
@@ -793,6 +819,14 @@ components:
           type: string
       required:
       - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
       - refresh
     User:
       type: object
@@ -820,6 +854,25 @@ components:
       - email
       - id
       - is_email_verified
+    UserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone_number:
+          type: string
+          maxLength: 20
+      required:
+      - email
   securitySchemes:
     jwtAuth:
       type: http
