@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from .models import Product
 from .serializers import ProductSerializer, ProductCreateSerializer
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 
@@ -21,7 +21,10 @@ class ProductView(APIView):
         description="This contains product informations",
         request=ProductCreateSerializer,
         responses={
-            200: ProductSerializer,
+            200: OpenApiResponse(
+                response=ProductSerializer,
+                description="Product successfully created."
+            ),
         }
 
     )
