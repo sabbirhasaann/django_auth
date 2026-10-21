@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.viewsets import ModelViewSet
 from .models import Task
 from .serializers import TaskSerializer
+from .filters import TaskFilter
 
 
 from .serializers import (
@@ -59,6 +60,7 @@ class TaskViewSet(ModelViewSet):
 
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    filterset_class = TaskFilter
 
     @extend_schema(
         parameters=[
