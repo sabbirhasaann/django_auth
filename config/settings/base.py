@@ -24,6 +24,7 @@ NEW_APPS = [
     'drf_spectacular_sidecar',
     'products',
     'projects',
+    'django_filters',
 ]
 
 INSTALLED_APPS += NEW_APPS
