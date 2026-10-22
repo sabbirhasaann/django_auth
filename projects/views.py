@@ -70,6 +70,16 @@ class TaskViewSet(ModelViewSet):
                 location=OpenApiParameter.PATH,
                 description="The uniqe Id of the task."
             ),
+            OpenApiParameter(
+                name="X-Request-ID",
+                type=str,
+                location=OpenApiParameter.HEADER,
+                required=False,
+                description=(
+                    "Optional client-generated identifier "
+                    "for request tracing."
+                ),
+            )
         ]
     )
     def retrieve(self, request, *args, **kwargs):
