@@ -267,6 +267,13 @@ class UsersListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    @extend_schema(
+        summary="Users list enpoint",
+        description="Users list"
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class UserViewSet(viewsets.ModelViewSet):
 
