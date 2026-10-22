@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiParameter,
+    inline_serializer,
 )
 from rest_framework import serializers
 
@@ -169,6 +170,21 @@ class LoginView(APIView):
 
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Login api view",
+        description="Login API",
+        request=LoginSerializer,
+        responses={
+                200: inline_serializer(
+                    name="Login Response",
+                    fields={
+                        "access": serializers.CharField(help_text="JWT access token"),
+                        "refresh": serializers.CharField(help_text="JWT refresh token"),
+                        "user": UserSerializer()
+                    }
+                )
+        }
+    )
     def post(self, request):
 
         serializer = LoginSerializer(
