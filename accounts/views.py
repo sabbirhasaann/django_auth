@@ -129,6 +129,28 @@ class AccessTokenLoginView(APIView):
 class RefreshTokenView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Refresh token",
+        description=(
+            "Takes a refresh token and returns a new access and refresh token"
+            " pair."
+        ),
+        request=RefreshTokenSerializer,
+        responses={
+            200: serializers.SerializerMetaclass(
+                "RefreshTokenResponseSerializer",
+                (serializers.Serializer,),
+                {
+                    "access": serializers.CharField(
+                        help_text="New JWT access token"
+                    ),
+                    "refresh": serializers.CharField(
+                        help_text="New JWT refresh token"
+                    ),
+                },
+            )
+        },
+    )
     def post(self, request):
         serializer = RefreshTokenSerializer(
             data=request.data
