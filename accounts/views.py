@@ -238,6 +238,15 @@ class LogoutView(APIView):
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Registration api endpoint",
+        description=(
+            "Submit registration infos..",
+        ),
+        request=RegisterSerializer,
+        responses=UserSerializer
+
+    )
     def post(self, request):
 
         serializer = RegisterSerializer(
