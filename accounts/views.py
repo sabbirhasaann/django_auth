@@ -240,9 +240,7 @@ class RegisterView(APIView):
 
     @extend_schema(
         summary="Registration api endpoint",
-        description=(
-            "Submit registration infos..",
-        ),
+        description="Submit registration infos..",
         request=RegisterSerializer,
         responses=UserSerializer
 
