@@ -56,6 +56,30 @@ class MeView(APIView):
 class StatusView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="Check authentication status",
+        description=(
+            "Returns whether the user is authenticated along with basic user"
+            " details."
+        ),
+        responses={
+            200: serializers.SerializerMetaclass(
+                "StatusResponseSerializer",
+                (serializers.Serializer,),
+                {
+                    "authenticated": serializers.BooleanField(
+                        help_text="Indicates if the user is authenticated"
+                    ),
+                    "user_id": serializers.IntegerField(
+                        help_text="The primary key of the user"
+                    ),
+                    "username": serializers.CharField(
+                        help_text="The username of the user"
+                    ),
+                },
+            )
+        },
+    )
     def get(self, request):
         print(request)
         return Response({
