@@ -140,6 +140,26 @@ class LogoutView(APIView):
 
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Logout endpoint",
+        description=(
+            "Server Side "
+            "Logout"
+        ),
+        request=LogoutSerializer,
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        'details': 'Successfully logged out.',
+                    }
+                },
+            }
+        }
+    )
+    
     def post(self, request):
 
         serializer = LogoutSerializer(
