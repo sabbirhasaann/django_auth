@@ -36,9 +36,20 @@ from .services import (
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="Get user",
+        description=(
+            "Get user"
+        ),
+        request=None,
+        responses={
+            200: UserSerializer
+        },
+    )
     def get(self, request):
         return Response(
             UserSerializer(request.user).data,
+            status=status.HTTP_200_OK
         )
 
 
@@ -159,7 +170,6 @@ class LogoutView(APIView):
             }
         }
     )
-    
     def post(self, request):
 
         serializer = LogoutSerializer(
